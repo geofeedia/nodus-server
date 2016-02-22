@@ -1,0 +1,13 @@
+{
+  "name": "nodus",
+  "version": "0.0.7",
+  "description": "NodeJS Application Framework.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://gotham.bradserbu.com:100443/bradserbu/nodus-server.git"
+  },
+  "main": "./lib/",
+  "dependencies": {
+  }
+}
