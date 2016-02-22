@@ -1,7 +1,7 @@
 {
-  "name": "nodus",
-  "version": "0.0.7",
-  "description": "NodeJS Application Framework.",
+  "name": "nodus-server",
+  "version": "0.1.0",
+  "description": "Server Hosting Platform for nodus based applications.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
