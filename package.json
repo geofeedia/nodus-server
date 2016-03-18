@@ -9,6 +9,7 @@
   },
   "main": "server.js",
   "dependencies": {
-    "nodus": "0.0.16"
+    "nodus": "0.0.16",
+    "yargs": "^4.3.1"
   }
 }
