@@ -49,3 +49,6 @@ class Component extends EventEmitter {
         this.emit('unloaded');
     }
 }
+
+module.exports = Component;
+module.exports.Component = Component;

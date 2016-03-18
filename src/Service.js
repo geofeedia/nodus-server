@@ -3,12 +3,14 @@
 // ** Dependencies
 const Component = require('./Component');
 
-class Program extends Component {
+class Service extends Component {
     constructor(args, options) {
         super(args, options);
+
+
     }
 }
 
 // ** Exports
-module.exports = Program;
-module.exports.Program = Program;
+module.exports = Service;
+module.exports.Service = Service;
