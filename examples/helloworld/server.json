@@ -1,0 +1,28 @@
+{
+  "services": {
+    "helloworld": {
+      "description": "Issue a standard programmers greeting to the user",
+      "commands": {
+        "sayhello": {
+          "provider": "sayhello.js",
+          "parameters": {
+            "name": {
+              "description": "The name of the user to greet.",
+              "required": false
+            }
+          },
+          "interfaces": {
+            "rest": {
+              "methods": ["GET", "POST"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "interfaces": {
+    "rest": {
+      "provider": "interfaces:rest"
+    }
+  }
+}
