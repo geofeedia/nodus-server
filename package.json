@@ -7,8 +7,8 @@
     "type": "git",
     "url": "https://gotham.bradserbu.com:100443/bradserbu/nodus-server.git"
   },
-  "main": "./lib/",
+  "main": "server.js",
   "dependencies": {
-    "nodus": "0.0.7"
+    "nodus": "0.0.16"
   }
 }
