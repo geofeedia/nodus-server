@@ -18,7 +18,7 @@ const server = new Server(args, options, config);
 // ** Shutdown the server on SIGINT, SIGTERM
 ['SIGTERM', 'SIGINT'].forEach(signal => {
     process.on(signal, () => {
-        logger.info(`**** ${signal} RECEIVED **** `);
+        logger.warn(`**** ${signal} RECEIVED **** `);
         logger.info('Shutting down server...');
 
         server.stop();
@@ -32,3 +32,6 @@ server.on('stopped', () => logger.info('Server stopped.'));
 
 // ** Start the server
 server.start();
+
+// ** Start reading from stdin so we don't exit.
+process.stdin.resume();
