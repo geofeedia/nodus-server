@@ -2,6 +2,7 @@
 'use strict';
 
 // ** Dependencies
+const _ = require('underscore');
 const util = require('util');
 const path = require('path');
 
@@ -16,6 +17,17 @@ const files = require('nodus-framework').files;
 // ** Load CLI options and arguments
 const options = cli.options();
 logger.info('OPTIONS:', options);
+
+// ** Keep track of register interface providers
+const __interfaces = {};
+function create_interface(type, options, config) {
+    // ** Check if we have already loaded this provider
+    if (!__interfaces[type]) {
+        __interfaces[type] = require(`../src/${type}`);
+    }
+
+    return new __interfaces[type](options, config);
+}
 
 // ** Create a new server
 const server = new Server(options);
@@ -46,9 +58,8 @@ function init() {
 function load() {
     // ** We were passed the server configuration (json|js)
     const filepath = options._[0];
-    logger.info('FILE:', filepath);
-    if (!filepath)
-    {
+    logger.debug('FILE:', filepath);
+    if (!filepath) {
         // TODO: Show yargs help here
         console.log('Please specifiy a server module to load.');
         process.exit();
@@ -56,22 +67,29 @@ function load() {
 
     // ** server.json
     const extension = path.extname(filepath);
-    logger.info('EXTENSION:', extension);
-    // if (extension.toUpperCase() === '.JSON') {
-        const config = files.requireFile(filepath);
+    logger.debug('EXTENSION:', extension);
 
-        logger.info('CONFIG:', config);
+    const config = files.requireFile(filepath);
 
-        // ** Load Interfaces
-        const interfaces = {};
-        if (interfaces)
-            config.interfaces.forEach(i => server.loadInterface(i));
+    logger.info('CONFIG:', config);
 
-        // ** Load Services
-        const services = config.services;
-        if (services)
-            config.services.forEach(s => server.loadService(s));
-    // }
+    // ** Load Interfaces
+    const interfaces = {};
+    _.forEach(config.interfaces, (def, name) => {
+        logger.debug('Loading interface:', {name: name}, def);
+
+        const type = def.type;
+        const options = def.options;
+        const config = def.config;
+        const _interface = create_interface(type, options, config);
+
+        server.loadInterface(_interface)
+    });
+
+    // ** Load Services
+    const services = config.services;
+    // _.forEach(config.services, s => server.loadService(s));
+
 }
 
 function start() {
