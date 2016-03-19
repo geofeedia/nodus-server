@@ -23,7 +23,7 @@ const __interfaces = {};
 function create_interface(type, options, config) {
     // ** Check if we have already loaded this provider
     if (!__interfaces[type]) {
-        __interfaces[type] = require(`../src/${type}`);
+        __interfaces[type] = require(`../${type}`);
     }
 
     return new __interfaces[type](options, config);
