@@ -67,8 +67,25 @@ class RestInterface extends Interface {
                         const args = req.query;
 
                         // ** Run the command
+                        command(args)
+                            .catch(err => next(err))
+                            .then(result => {
+                                res.send(result);
+                                next();
+                            });
+                    });
+                    break;
+                case 'POST':
+                    api.post(path, (req, res, next) => {
+                        const command = req.params.command;
+                        const args = req.body;
+                        logger.info('ARGS:', args);
+
+                        logger.info('RUN: COMMAND:', command, {args: args});
+
                         command(args, (err, result) => {
                             if (err) {
+                                logger.error(err);
                                 res.send(500, {error: err});
                                 next(err);
                             } else {
@@ -77,9 +94,6 @@ class RestInterface extends Interface {
                             }
                         });
                     });
-                    break;
-                case 'POST':
-                    throw errors('NOT_IMPLEMENTED');
                     break;
                 default:
                     throw errors('NOT_SUPPORTED', {method: method});

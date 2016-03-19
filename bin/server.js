@@ -17,6 +17,7 @@ const errors = require('nodus-framework').errors;
 const logger = require('nodus-framework').logging.createLogger();
 const cli = require('nodus-framework').cli;
 const files = require('nodus-framework').files;
+const functions = require('nodus-framework').functions;
 
 // ** Load CLI options and arguments
 const options = cli.options();
@@ -95,17 +96,27 @@ function load() {
     logger.info('INTERFACES:', server._interfaces);
 
     // ** Load Services
-    const services = config.services;
     _.forEach(config.services, (def, name) => {
         logger.info('Loading service:', {name: name}, def);
         const service = new Service({name: name});
 
         // ** Load the commands
-        _.forEach(def.commands, (options, name) => {
-            logger.info('Loading command:', {name: name}, options);
+        _.forEach(def.commands, (options, command_name) => {
+            logger.info('Loading command:', {name: command_name}, options);
 
-            const command = new Command({name: name}, options);
-            logger.info('COMMAND:', command);
+            const dir = path.relative(process.cwd(), filepath);
+            logger.info('DIR:', dir);
+            const provider_file = path.join(dir, options.provider);
+            logger.info('FILE:', provider_file);
+
+            // ** Load the provider for this command
+            const provider = files.requireFile(provider_file);
+            if (!provider)
+                throw errors('PROVIDER_LOAD_ERROR', {provider: options.provider},
+                    'Failed to load the provider for the command.');
+
+            // ** Load the command
+            const command = functions.command(provider);
 
             // ** Register the command with it's interfaces
             const basePath = service.name;
@@ -114,12 +125,10 @@ function load() {
 
                 if (!inter) throw errors('INTERFACE_NOT_FOUND', {name: name});
 
-                const path = basePath + '/' + (options.path || command.name);
+                const path = basePath + '/' + (options.path || command_name);
 
-                logger.info('REGISTER:', {command: command.name, interface: name});
-                inter.registerEndpoint(path, options, (args, options) => {
-                    throw errors('NOT_IMPLEMENTED', {args: args, options: options});
-                });
+                logger.info('REGISTER:', {command: command_name, interface: name});
+                inter.registerEndpoint(path, options, (args, options) => command(args, options));
             });
         });
 
