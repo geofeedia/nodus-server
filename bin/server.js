@@ -3,6 +3,7 @@
 
 // ** Dependencies
 const _ = require('underscore');
+const chalk = require('chalk');
 const util = require('util');
 const path = require('path');
 
@@ -16,7 +17,7 @@ const files = require('nodus-framework').files;
 
 // ** Load CLI options and arguments
 const options = cli.options();
-logger.info('OPTIONS:', options);
+logger.debug('OPTIONS:', options);
 
 // ** Keep track of register interface providers
 const __interfaces = {};
@@ -61,7 +62,7 @@ function load() {
     logger.debug('FILE:', filepath);
     if (!filepath) {
         // TODO: Show yargs help here
-        console.log('Please specifiy a server module to load.');
+        console.log(chalk.red('Please specifiy a server module to load.'));
         process.exit();
     }
 
@@ -74,7 +75,6 @@ function load() {
     logger.info('CONFIG:', config);
 
     // ** Load Interfaces
-    const interfaces = {};
     _.forEach(config.interfaces, (def, name) => {
         logger.debug('Loading interface:', {name: name}, def);
 

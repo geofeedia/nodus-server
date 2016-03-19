@@ -9,6 +9,7 @@
   },
   "main": "server.js",
   "dependencies": {
+    "chalk": "^1.1.1",
     "nodus": "0.0.16",
     "nodus-framework": "^0.1.1",
     "restify": "^4.0.4",
