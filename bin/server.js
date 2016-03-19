@@ -3,12 +3,14 @@
 
 // ** Dependencies
 const _ = require('underscore');
+const extend = require('extend');
 const chalk = require('chalk');
 const util = require('util');
 const path = require('path');
 
 // ** Libraries
-const Server = require('../lib/Server.js');
+const Service = require('../lib/Service');
+const Server = require('../lib/Server');
 
 // ** Platform
 const logger = require('nodus-framework').logging.createLogger();
@@ -21,13 +23,19 @@ logger.debug('OPTIONS:', options);
 
 // ** Keep track of register interface providers
 const __interfaces = {};
-function create_interface(type, options, config) {
+function create_interface(args, options, config) {
+    const type = args.type;
     // ** Check if we have already loaded this provider
     if (!__interfaces[type]) {
         __interfaces[type] = require(`../${type}`);
     }
 
     return new __interfaces[type](options, config);
+}
+
+function create_service(name, options, config) {
+    const service = new Service({name: name}, options, config);
+    return service;
 }
 
 // ** Create a new server
@@ -81,14 +89,18 @@ function load() {
         const type = def.type;
         const options = def.options;
         const config = def.config;
-        const _interface = create_interface(type, options, config);
+        const _interface = create_interface({type: type}, options, config);
 
         server.loadInterface(_interface)
     });
 
     // ** Load Services
     const services = config.services;
-    // _.forEach(config.services, s => server.loadService(s));
+    _.forEach(config.services, (args, name) => {
+        logger.info('Loading service:', {name: name}, args);
+        const service = create_service(name, args, options, config);
+        server.loadService(service);
+    });
 
 }
 
