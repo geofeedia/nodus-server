@@ -22,7 +22,11 @@
   },
   "interfaces": {
     "rest": {
-      "provider": "interfaces:rest"
+      "provider": "interfaces:rest",
+      "config": {
+        "host": "localhost",
+        "port": 3001
+      }
     }
   }
 }
