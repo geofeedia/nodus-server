@@ -4,7 +4,7 @@
 const restify = require('restify');
 
 // ** Libraries
-const Interface = require('../../lib/Interface');
+const Interface = require('../lib/Interface');
 
 // ** Platform
 const errors = require('nodus-framework').errors;
