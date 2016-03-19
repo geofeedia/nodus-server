@@ -1,7 +1,13 @@
 'use strict';
 
+// ** Constants
+const DEFAULT_METHODS = ['GET'];
+
 // ** Dependencies
+const _ = require('underscore');
+const PATH = require('path');
 const restify = require('restify');
+const path = require('path');
 
 // ** Libraries
 const Interface = require('../lib/Interface');
@@ -45,6 +51,41 @@ class RestInterface extends Interface {
         this.api.close();
 
         super.stop();
+    }
+
+    registerEndpoint(path, options, command) {
+        logger.info('PATH:', path);
+        const api = this.api;
+        const methods = options.methods || DEFAULT_METHODS;
+
+        _.forEach(methods, method => {
+            switch (method.toUpperCase()) {
+                case 'GET':
+                    api.get(path, (req, res, next) => {
+                        logger.info('=> GET:', path);
+
+                        const args = req.query;
+
+                        // ** Run the command
+                        command(args, (err, result) => {
+                            if (err) {
+                                res.send(500, {error: err});
+                                next(err);
+                            } else {
+                                res.send(result);
+                                next();
+                            }
+                        });
+                    });
+                    break;
+                case 'POST':
+                    throw errors('NOT_IMPLEMENTED');
+                    break;
+                default:
+                    throw errors('NOT_SUPPORTED', {method: method});
+                    break;
+            }
+        });
     }
 }
 

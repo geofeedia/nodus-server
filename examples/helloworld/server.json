@@ -13,7 +13,7 @@
           },
           "interfaces": {
             "rest": {
-              "methods": ["GET", "POST"]
+              "methods": ["GET"]
             }
           }
         }

@@ -3,16 +3,17 @@
 
 // ** Dependencies
 const _ = require('underscore');
-const extend = require('extend');
 const chalk = require('chalk');
 const util = require('util');
 const path = require('path');
 
 // ** Libraries
+const Command = require('../lib/Command');
 const Service = require('../lib/Service');
 const Server = require('../lib/Server');
 
 // ** Platform
+const errors = require('nodus-framework').errors;
 const logger = require('nodus-framework').logging.createLogger();
 const cli = require('nodus-framework').cli;
 const files = require('nodus-framework').files;
@@ -31,11 +32,6 @@ function create_interface(args, options, config) {
     }
 
     return new __interfaces[type](options, config);
-}
-
-function create_service(name, options, config) {
-    const service = new Service({name: name}, options, config);
-    return service;
 }
 
 // ** Create a new server
@@ -89,16 +85,44 @@ function load() {
         const type = def.type;
         const options = def.options;
         const config = def.config;
-        const _interface = create_interface({type: type}, options, config);
+        const _interface = create_interface({
+            type: type
+        }, options, config);
 
-        server.loadInterface(_interface)
+        server.loadInterface(name, _interface)
     });
+
+    logger.info('INTERFACES:', server._interfaces);
 
     // ** Load Services
     const services = config.services;
-    _.forEach(config.services, (args, name) => {
-        logger.info('Loading service:', {name: name}, args);
-        const service = create_service(name, args, options, config);
+    _.forEach(config.services, (def, name) => {
+        logger.info('Loading service:', {name: name}, def);
+        const service = new Service({name: name});
+
+        // ** Load the commands
+        _.forEach(def.commands, (options, name) => {
+            logger.info('Loading command:', {name: name}, options);
+
+            const command = new Command({name: name}, options);
+            logger.info('COMMAND:', command);
+
+            // ** Register the command with it's interfaces
+            const basePath = service.name;
+            _.forEach(options.interfaces, (options, name) => {
+                const inter = server.interface(name);
+
+                if (!inter) throw errors('INTERFACE_NOT_FOUND', {name: name});
+
+                const path = basePath + '/' + (options.path || command.name);
+
+                logger.info('REGISTER:', {command: command.name, interface: name});
+                inter.registerEndpoint(path, options, (args, options) => {
+                    throw errors('NOT_IMPLEMENTED', {args: args, options: options});
+                });
+            });
+        });
+
         server.loadService(service);
     });
 
