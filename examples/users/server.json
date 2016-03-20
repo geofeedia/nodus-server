@@ -1,0 +1,54 @@
+{
+  "services": {
+    "users": {
+      "provider": "users.js",
+      "commands": {
+        "getUser": {
+          "description": "Request the details about a user.",
+          "parameters": {
+            "name": {
+              "description": "The name of the user to get details about.",
+              "required": true
+            }
+          },
+          "interfaces": {
+            "rest": {
+              "methods": ["GET"]
+            }
+          }
+        },
+        "addUser": {
+          "description": "Get a user.",
+          "parameters": {
+            "name": {
+              "description": "The name of the user to get details about.",
+              "required": true
+            }
+          },
+          "interfaces": {
+            "rest": ["POST"]
+          }
+        },
+        "updateUser": {
+          "interfaces": {
+            "methods": ["PUT"]
+          }
+        },
+        "deleteUser": {
+          "interfaces": {
+            "methods": ["DELETE"]
+          }
+        }
+      }
+    }
+  },
+  "interfaces": {
+    "rest": {
+      "type": "interfaces/rest",
+      "config": {
+        "host": "localhost",
+        "port": "3000"
+      }
+    }
+  }
+}
