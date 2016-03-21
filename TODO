@@ -1,0 +1,53 @@
+{
+    event: "server:started",
+    timestamp: "2015-02-17T00:00:00Z",
+    elapsed_ms: 1023455
+}
+
+{
+    event: "service:started",
+    timestamp: "2015-02-17T01:00:00Z",
+    elapsed_ms: 10325,
+    service: "helloworld"
+}
+
+{
+    id: "324324322",
+    event: "service:request",
+    timestamp: "2015-02-17T02:00:00Z",
+    service: "helloworld",
+    command: "sayhello",
+    data: {
+        args: {},
+        options: {}
+    }
+}
+
+{
+    id: "324324322-0001",
+    event: "service:response",
+    timestamp: "2015-02-17T02:01:00Z",
+    elapsed_ms: 120021,
+    command: "sayhello",
+    request_id: "324324322"
+    data: {
+        messages: [],
+        error: null,
+        result: "Hello, Brad!"
+    }
+}
+
+# Server Events
+- server:error
+- server:(started|stopped)
+- server:service:(started|stopped)
+- server:shutdown
+
+# Service Events
+- service:error
+- service:(started|stopped)
+- service:(started|stopped)
+- service:
+
+# Interface Events
+- interface:
