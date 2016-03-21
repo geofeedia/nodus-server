@@ -37,6 +37,22 @@ class RestInterface extends Interface {
         this.api.use(restify.queryParser());
         this.api.use(restify.bodyParser());
         this.api.use(restify.gzipResponse());
+
+        // ** Make a dynamic service request
+        this.api.get('/:service/:command', (req, res, next) => {
+
+            const service = req.params.service;
+            const command = req.params.command;
+            const args = req.query;
+
+            // ** Make a dynamic service request
+            this.send_request(service, command, args)
+                .catch(err => next(err))
+                .then(result => {
+                    res.send(result);
+                    next();
+                });
+        });
     }
 
     start() {
@@ -54,6 +70,8 @@ class RestInterface extends Interface {
     }
 
     registerEndpoint(path, options, command) {
+        return;
+
         logger.info('PATH:', path);
         const api = this.api;
         const methods = options.methods || DEFAULT_METHODS;

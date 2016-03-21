@@ -67,7 +67,7 @@ function load() {
     logger.debug('FILE:', filepath);
     if (!filepath) {
         // TODO: Show yargs help here
-        console.log(chalk.red('Please specifiy a server module to load.'));
+        console.log(chalk.red('Please specify a server module to load.'));
         process.exit();
     }
 
