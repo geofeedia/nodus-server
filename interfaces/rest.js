@@ -78,12 +78,12 @@ class RestInterface extends Interface {
                     break;
                 case 'POST':
                     api.post(path, (req, res, next) => {
-                        const command = req.params.command;
+                        const url = req.url;
                         const args = req.body;
-                        logger.info('ARGS:', args);
 
-                        logger.info('RUN: COMMAND:', command, {args: args});
+                        logger.info('=> POST:', url, args);
 
+                        // ** Run the command
                         command(args, (err, result) => {
                             if (err) {
                                 logger.error(err);
