@@ -115,21 +115,27 @@ function load() {
                 throw errors('PROVIDER_LOAD_ERROR', {provider: options.provider},
                     'Failed to load the provider for the command.');
 
-            // ** Load the command
-            const command = functions.command(provider);
+            // ** Add the command to the service
+            const command = new Command(_.extend({name: command_name}, options), provider);
+            service.addCommand(command);
 
-            // ** Register the command with it's interfaces
-            const basePath = service.name;
-            _.forEach(options.interfaces, (options, name) => {
-                const inter = server.interface(name);
-
-                if (!inter) throw errors('INTERFACE_NOT_FOUND', {name: name});
-
-                const path = basePath + '/' + (options.path || command_name);
-
-                logger.info('REGISTER:', {command: command_name, interface: name});
-                inter.registerEndpoint(path, options, (args, options) => command(args, options));
-            });
+            //
+            //
+            // // ** Load the command
+            // const command = functions.command(provider);
+            //
+            // // ** Register the command with it's interfaces
+            // const basePath = service.name;
+            // _.forEach(options.interfaces, (options, name) => {
+            //     const inter = server.interface(name);
+            //
+            //     if (!inter) throw errors('INTERFACE_NOT_FOUND', {name: name});
+            //
+            //     const path = basePath + '/' + (options.path || command_name);
+            //
+            //     logger.info('REGISTER:', {command: command_name, interface: name});
+            //     inter.registerEndpoint(path, options, (args, options) => command(args, options));
+            // });
         });
 
         server.loadService(service);

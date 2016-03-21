@@ -46,12 +46,17 @@ class RestInterface extends Interface {
             const args = req.query;
 
             // ** Make a dynamic service request
-            this.send_request(service, command, args)
-                .catch(err => next(err))
+            this.make_request(service, command, args)
                 .then(result => {
+                    logger.info('REST_RESULT:', result);
                     res.send(result);
                     next();
-                });
+                })
+                .catch(err => {
+                    logger.info('REST_ERROR:', err);
+                    next(err)
+                })
+
         });
     }
 
