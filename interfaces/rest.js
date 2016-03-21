@@ -62,9 +62,10 @@ class RestInterface extends Interface {
             switch (method.toUpperCase()) {
                 case 'GET':
                     api.get(path, (req, res, next) => {
-                        logger.info('=> GET:', path);
-
+                        const url = req.url;
                         const args = req.query;
+
+                        logger.info('=> GET:', url, args);
 
                         // ** Run the command
                         command(args)

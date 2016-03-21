@@ -26,17 +26,27 @@
             }
           },
           "interfaces": {
-            "rest": ["POST"]
+            "rest": {
+              "methods":["POST"]
+            }
           }
         },
         "updateUser": {
           "interfaces": {
-            "methods": ["PUT"]
+            "rest": {
+              "methods": [
+                "PUT"
+              ]
+            }
           }
         },
         "deleteUser": {
           "interfaces": {
-            "methods": ["DELETE"]
+            "rest": {
+              "methods": [
+                "DELETE"
+              ]
+            }
           }
         }
       }
