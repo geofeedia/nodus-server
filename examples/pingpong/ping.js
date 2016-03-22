@@ -14,7 +14,7 @@ class PingService extends Service {
     constructor(name, options) {
         super(name, options);
 
-        this.command(new Command('ping', {}, () => this.ping()));
+        this.command(new Command('send', {}, () => this.ping()));
     }
 
     ping() {
