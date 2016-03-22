@@ -2,9 +2,6 @@
 
 // ** Constants
 const SERVICE_NAME = 'ping';
-const COMMANDS = {
-    PING: 'PING'
-};
 
 // ** Dependencies
 const util = require('util');
@@ -20,7 +17,7 @@ class PingService extends Service {
     constructor(options) {
         super(SERVICE_NAME, options);
 
-        this.addCommand(new Command(COMMANDS.PING, {}, () => this.ping()));
+        this.addCommand(new Command('ping', {}, () => this.ping()));
     }
 
     ping() {

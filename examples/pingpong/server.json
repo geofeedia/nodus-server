@@ -1,7 +1,7 @@
 {
   "services": {
-    "ping": "ping-service.js",
-    "pong": "pong-service.js"
+    "ping": "ping.js",
+    "pong": "pong.js"
   },
   "interfaces": {
     "rest": {
