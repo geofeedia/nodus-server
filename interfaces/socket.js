@@ -18,9 +18,9 @@ class SocketInterface extends Interface {
         this.host = config.host;
         this.port = config.port;
 
-        this.server = http.createServer(req, res) => {
-            const index = ''
-        };
+        this.server = http.createServer((req, res) => {
+            const index = 
+        });
 
         this.socket = io(this.server);
 
