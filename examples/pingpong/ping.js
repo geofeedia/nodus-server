@@ -19,7 +19,7 @@ class PingService extends Service {
 
     ping() {
         // ** Handle PING requests
-        return this.service_request('pong', 'ping');
+        return this.request('pong', 'ping');
     }
 }
 

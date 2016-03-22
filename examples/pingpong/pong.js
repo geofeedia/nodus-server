@@ -23,7 +23,7 @@ class PongService extends Service {
         super(SERVICE_NAME, options);
 
         // ** Handle PING requests
-        this.handle_request(
+        this.process_request(
             req => util.isString(req.command) && req.command.toUpperCase() === COMMANDS.PING,
             req => Promise.resolve(this.pong())
         );
