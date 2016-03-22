@@ -47,14 +47,14 @@ class RestInterface extends Interface {
 
             // ** Make a dynamic service request
             this.make_request(service, command, args)
+                .catch(err => {
+                    logger.error(err);
+                    next(err)
+                })
                 .then(result => {
                     logger.info('REST_RESULT:', result);
                     res.send(result);
                     next();
-                })
-                .catch(err => {
-                    logger.info('REST_ERROR:', err);
-                    next(err)
                 })
 
         });
