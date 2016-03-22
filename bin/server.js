@@ -17,7 +17,6 @@ const errors = require('nodus-framework').errors;
 const logger = require('nodus-framework').logging.createLogger();
 const cli = require('nodus-framework').cli;
 const files = require('nodus-framework').files;
-const functions = require('nodus-framework').functions;
 
 // ** Load CLI options and arguments
 const options = cli.options();

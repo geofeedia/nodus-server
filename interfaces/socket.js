@@ -19,7 +19,7 @@ class SocketInterface extends Interface {
         this.port = config.port;
 
         this.server = http.createServer((req, res) => {
-            const index = 
+            throw errors('NOT_IMPLEMENTED');
         });
 
         this.socket = io(this.server);
