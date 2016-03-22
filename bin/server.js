@@ -98,7 +98,7 @@ function load() {
     // ** Load Services
     _.forEach(config.services, (def, name) => {
         logger.info('Loading service:', {name: name}, def);
-        const service = new Service({name: name});
+        const service = new Service(name);
 
         // ** Load the commands
         _.forEach(def.commands, (options, command_name) => {
@@ -116,7 +116,7 @@ function load() {
                     'Failed to load the provider for the command.');
 
             // ** Add the command to the service
-            const command = new Command(_.extend({name: command_name}, options), provider);
+            const command = new Command(command_name, options, provider);
             service.addCommand(command);
 
             //
