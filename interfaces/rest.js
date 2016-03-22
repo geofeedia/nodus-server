@@ -37,6 +37,9 @@ class RestInterface extends Interface {
         this.api.use(restify.queryParser());
         this.api.use(restify.bodyParser());
         this.api.use(restify.gzipResponse());
+        // this.api.use(restify.auditLogger({
+        //     log: logger
+        // }));
 
         // ** Make a dynamic service request
         this.api.get('/:service/:command', (req, res, next) => {

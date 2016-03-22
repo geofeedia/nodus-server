@@ -66,6 +66,10 @@ function load() {
     const filepath = options._[0];
     logger.debug('FILE:', filepath);
 
+    const dir = path.relative(process.cwd(), filepath);
+    logger.info('DIR:', dir);
+
+
     if (!filepath) {
         console.log(chalk.red('Please specify a server module to load.'));
         process.exit();
@@ -96,47 +100,44 @@ function load() {
     logger.info('INTERFACES:', server._interfaces);
 
     // ** Load Services
-    _.forEach(config.services, (def, name) => {
-        logger.info('Loading service:', {name: name}, def);
-        const service = new Service(name);
+    _.forEach(config.services, (service_options, service_name) => {
+        logger.info('Loading service:', {name: service_name}, service_options);
+
+        // ** If the def is a string, then assume it is a service exported from JS code
+        let service;
+        if (util.isString(service_options)) {
+            const provider_file = path.join(dir, service_options);
+            logger.info('FILE:', provider_file);
+
+            const provider = files.requireFile(provider_file);
+
+            service = new provider(service_name, service_options);
+        } else {
+            // ** Dynamically build the service from it's command definitions.
+            service = new Service(service_name, service_options);
+        }
 
         // ** Load the commands
-        _.forEach(def.commands, (options, command_name) => {
-            logger.info('Loading command:', {name: command_name}, options);
+        _.forEach(service_options.commands, (command_options, command_name) => {
+            logger.info('Loading command:', {name: command_name}, command_options);
 
-            const dir = path.relative(process.cwd(), filepath);
-            logger.info('DIR:', dir);
-            const provider_file = path.join(dir, options.provider);
+            const provider_file = path.join(dir, command_options.provider);
             logger.info('FILE:', provider_file);
 
             // ** Load the provider for this command
             const provider = files.requireFile(provider_file);
             if (!provider)
-                throw errors('PROVIDER_LOAD_ERROR', {provider: options.provider},
+                throw errors('PROVIDER_LOAD_ERROR', {provider: command_options.provider},
                     'Failed to load the provider for the command.');
 
             // ** Add the command to the service
-            const command = new Command(command_name, options, provider);
+            const command = new Command(command_name, command_options, provider);
             service.addCommand(command);
-
-            //
-            //
-            // // ** Load the command
-            // const command = functions.command(provider);
-            //
-            // // ** Register the command with it's interfaces
-            // const basePath = service.name;
-            // _.forEach(options.interfaces, (options, name) => {
-            //     const inter = server.interface(name);
-            //
-            //     if (!inter) throw errors('INTERFACE_NOT_FOUND', {name: name});
-            //
-            //     const path = basePath + '/' + (options.path || command_name);
-            //
-            //     logger.info('REGISTER:', {command: command_name, interface: name});
-            //     inter.registerEndpoint(path, options, (args, options) => command(args, options));
-            // });
         });
+
+        if (!service)
+            throw errors('SERVICE_LOAD_FAILURE', {service: service_name},
+                'Failed to load the service.');
 
         server.loadService(service);
     });
