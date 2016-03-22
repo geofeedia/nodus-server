@@ -20,8 +20,8 @@ const logger = require('nodus-framework').logging.createLogger();
  * Provides a RESTful HTTP interface
  */
 class RestInterface extends Interface {
-    constructor(options, config) {
-        super(options, config);
+    constructor(name, options, config) {
+        super(name, options, config);
 
         // ** Load configuration properties
         this.host = config.host;

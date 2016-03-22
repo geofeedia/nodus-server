@@ -23,15 +23,16 @@ const options = cli.options();
 logger.debug('OPTIONS:', options);
 
 // ** Keep track of register interface providers
-const __interfaces = {};
-function create_interface(args, options, config) {
-    const type = args.type;
+const __instances = {};
+function create_instance(type, name, options, config) {
+    logger.info('INSTANCE:', type);
     // ** Check if we have already loaded this provider
-    if (!__interfaces[type]) {
-        __interfaces[type] = require(`../${type}`);
+    if (!__instances[type]) {
+        __instances[type] = require(`../${type}`);
     }
 
-    return new __interfaces[type](options, config);
+    logger.info({options: options, config: config});
+    return new __instances[type](name, options, config);
 }
 
 // ** Create a new server
@@ -82,18 +83,28 @@ function load() {
 
     logger.info('CONFIG:', config);
 
-    // ** Load Interfaces
-    _.forEach(config.interfaces, (def, name) => {
-        logger.debug('Loading interface:', {name: name}, def);
+    // ** Load Adapters
+    _.forEach(config.adapters, (def, adapter_name) => {
+        logger.debug('Loading adapter:', adapter_name, def);
 
         const type = def.type;
         const options = def.options;
         const config = def.config;
-        const _interface = create_interface({
-            type: type
-        }, options, config);
 
-        server.loadInterface(name, _interface)
+        const adapter = create_instance(type, adapter_name, options, config);
+        server.loadAdapter(adapter_name, adapter);
+    });
+
+    // ** Load Interfaces
+    _.forEach(config.interfaces, (def, interface_name) => {
+        logger.debug('Loading interface:', {name: interface_name}, def);
+
+        const type = def.type;
+        const options = def.options;
+        const config = def.config;
+        const _interface = create_instance(type, interface_name, options, config);
+
+        server.loadInterface(interface_name, _interface)
     });
 
     logger.info('INTERFACES:', server._interfaces);
