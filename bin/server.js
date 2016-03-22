@@ -65,8 +65,8 @@ function load() {
     // ** We were passed the server configuration (json|js)
     const filepath = options._[0];
     logger.debug('FILE:', filepath);
+
     if (!filepath) {
-        // TODO: Show yargs help here
         console.log(chalk.red('Please specify a server module to load.'));
         process.exit();
     }

@@ -40,7 +40,6 @@ class RestInterface extends Interface {
 
         // ** Make a dynamic service request
         this.api.get('/:service/:command', (req, res, next) => {
-
             const service = req.params.service;
             const command = req.params.command;
             const args = req.query;
@@ -61,8 +60,7 @@ class RestInterface extends Interface {
                 .then(result => {
                     res.send(result);
                     next();
-                })
-
+                });
         });
     }
 
