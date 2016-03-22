@@ -66,14 +66,21 @@ function load() {
     const filepath = options._[0];
     logger.debug('FILE:', filepath);
 
-    const dir = path.relative(process.cwd(), filepath);
-    logger.info('DIR:', dir);
-
-
+    // ** Ensure we were passed a file to run
     if (!filepath) {
         console.log(chalk.red('Please specify a server module to load.'));
         process.exit();
     }
+
+    // ** Figure out what directory the filepath is located
+    const dir = path.relative(
+        process.cwd(),
+        files.isDirectory(filepath)
+            ? filepath
+            : path.parse(filepath).dir // Use the directory of the file path
+    );
+
+    logger.info('DIR:', dir);
 
     // ** server.json
     const extension = path.extname(filepath);
