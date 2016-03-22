@@ -48,7 +48,7 @@ class RestInterface extends Interface {
             const args = req.query;
 
             // ** Make a dynamic service request
-            this.make_request(service, command, args)
+            this.service_request(service, command, args)
                 .catch(err => {
                     // ** Convert error('NO_HANDLER') -> 404
                     if (err.code === 'NO_HANDLER') {

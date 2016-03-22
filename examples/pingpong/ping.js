@@ -1,8 +1,5 @@
 'use strict';
 
-// ** Constants
-const SERVICE_NAME = 'ping';
-
 // ** Dependencies
 const util = require('util');
 
@@ -14,15 +11,15 @@ const Service = require('../../lib').Service;
  * Handles 'PING' messages with a 'PONG' reply
  */
 class PingService extends Service {
-    constructor(options) {
-        super(SERVICE_NAME, options);
+    constructor(name, options) {
+        super(name, options);
 
-        this.addCommand(new Command('ping', {}, () => this.ping()));
+        this.command(new Command('ping', {}, () => this.ping()));
     }
 
     ping() {
         // ** Handle PING requests
-        return this.make_request('pong', 'ping');
+        return this.service_request('pong', 'ping');
     }
 }
 
