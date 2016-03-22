@@ -149,7 +149,7 @@ function load() {
 
             // ** Add the command to the service
             const command = new Command(command_name, command_options, provider);
-            service.command(command);
+            service.addCommand(command);
         });
 
         if (!service)

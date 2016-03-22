@@ -19,7 +19,14 @@ class PongService extends Service {
         // ** Handle PING requests
         this.process_request(
             req => req.command === 'ping',
-            req => 'PONG'
+            req => {
+                logger.info('ARGS:', this.__args);
+                logger.info('OPTIONS:', this.__options);
+
+                return options.delay
+                    ? new Promise((resolve, reject) => setTimeout(() => resolve('PONG'), parseInt(options.delay)))
+                    : "PONG"
+            }
         );
     }
 }

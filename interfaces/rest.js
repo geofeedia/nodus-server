@@ -44,7 +44,7 @@ class RestInterface extends Interface {
         // ** Make a dynamic service request
         this.api.get('/:service/:command', (req, res, next) => {
             const service = req.params.service;
-            const command = req.params.command;
+            const command = req.params.addCommand;
             const args = req.query;
 
             // ** Make a dynamic service request

@@ -20,6 +20,7 @@ class EventSocket extends Adapter {
 
     attach(server) {
         logger.info('Attaching to server event stream...');
+
         // ** Log all events
         server.onAny((event, value) => {
             logger.info('[EVENT]', value, {event: event});
