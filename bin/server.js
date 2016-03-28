@@ -121,6 +121,7 @@ function load() {
         logger.info('Loading service:', {name: service_name}, service_options);
 
         // ** If the def is a string, then assume it is a service exported from JS code
+        // ** and require the file.
         let service;
         if (util.isString(service_options)) {
             const provider_file = path.join(dir, service_options);
