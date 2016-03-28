@@ -133,7 +133,7 @@ function load() {
                 logger.info('*** EXPORTED SERVICE ***');
             }
 
-            service = provider(service_name, service_options);
+            service = new provider(service_name, service_options);
         } else {
             // ** Dynamically build the service from it's command definitions.
             service = new Service(service_name, service_options);
