@@ -128,7 +128,12 @@ function load() {
 
             const provider = files.requireFile(provider_file);
 
-            service = new provider(service_name, service_options);
+            // ** Check the type being exported here
+            if (provider instanceof Service) {
+                logger.info('*** EXPORTED SERVICE ***');
+            }
+
+            service = provider(service_name, service_options);
         } else {
             // ** Dynamically build the service from it's command definitions.
             service = new Service(service_name, service_options);

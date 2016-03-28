@@ -23,14 +23,5 @@
         "port": 3001
       }
     }
-  },
-  "adapters": {
-    "eventsocket": {
-      "type": "adapters/eventsocket",
-      "config": {
-        "host": "localhost",
-        "port": 3333
-      }
-    }
   }
 }

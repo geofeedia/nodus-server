@@ -1,47 +1,15 @@
 {
-  "services": {
-    "chat": {
-      "description": "Services to provide a chatroom for clients to send messages.",
-      "events": {
-        "message": {
-          "description": "A new message was sent from a client.",
-          "properties": {
-            "sender": {
-              "description": "The screen name of the user who sent the message"
-            },
-            "title": {
-              "description": "The title of the message to display"
-            },
-            "body": {
-              "description": "The body of the message"
-            }
-          }
-        }
-      },
-      "commands": {
-        "register": {
-          "description": "Register your screen name with the server so you can send messages.",
-          "parameters": {
-            "screen_name": {
-              "description": "Your desired screen name.",
-              "required": true
-            }
-          }
-        },
-        "send": {
-          "description": "Send a message to the chat room."
-        }
-      },
-      "interfaces": "socket"
-    }
-  },
-  "interfaces": {
-    "socket": {
-      "type": "interfaces/socket",
+  "adapters": {
+    "eventsocket": {
+      "type": "adapters/eventsocket.js",
       "config": {
         "host": "localhost",
         "port": 3333
       }
     }
-  }
+  },
+  "services": {
+    "console": "console.js"
+  },
+  "interfaces": {}
 }

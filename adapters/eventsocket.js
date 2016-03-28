@@ -1,5 +1,9 @@
 'use strict';
 
+// ** Dependencies
+const http = require('http');
+const io = require('socket.io');
+
 // ** Libraries
 const Adapter = require('../lib/Adapter');
 

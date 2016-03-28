@@ -14,13 +14,12 @@ class PingService extends Service {
     constructor(name, options) {
         super(name, options);
 
+        // ** Add a command to this service
         this.addCommand(new Command('send', {}, () => this.ping()));
     }
 
     ping() {
-        logger.info('PING: ARGS', this.__args);
-
-        // ** Handle PING requests
+        // ** Send a 'ping' request to the 'pong' service.
         return this.request('pong', 'ping');
     }
 }
