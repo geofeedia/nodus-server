@@ -65,6 +65,31 @@ class RestInterface extends Interface {
                     next();
                 });
         });
+
+        // ** Make a dynamic service request
+        this.api.post('/:service/:command', (req, res, next) => {
+            const service = req.params.service;
+            const command = req.params.command;
+            const args = req.body;
+
+            // ** Make a dynamic service request
+            this.request(service, command, args)
+                .catch(err => {
+                    // ** Convert error('NO_HANDLER') -> 404
+                    if (err.code === 'NO_HANDLER') {
+                        res.status(404);
+                        res.send(err);
+                        next();
+                    } else {
+                        logger.error(err);
+                        next(err);
+                    }
+                })
+                .then(result => {
+                    res.send(result);
+                    next();
+                });
+        });
     }
 
     start() {
