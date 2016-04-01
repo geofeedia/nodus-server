@@ -1,6 +1,6 @@
 {
   "name": "nodus-server",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Server Hosting Platform for nodus based applications.",
   "license": "Apache-2.0",
   "repository": {
@@ -10,6 +10,7 @@
   "bin": {
     "nodus-server": "bin/server.js"
   },
+  "main": "./lib",
   "dependencies": {
     "chalk": "^1.1.1",
     "eventemitter2": "^1.0.0",
