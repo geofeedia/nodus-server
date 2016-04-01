@@ -4,7 +4,6 @@
       "provider": "users.js",
       "commands": {
         "getUser": {
-          "description": "Request the details about a user.",
           "parameters": {
             "name": {
               "description": "The name of the user to get details about.",
@@ -13,12 +12,12 @@
           },
           "interfaces": {
             "rest": {
+              "path": "user",
               "methods": ["GET"]
             }
           }
         },
         "addUser": {
-          "description": "Get a user.",
           "parameters": {
             "name": {
               "description": "The name of the user to get details about.",
@@ -27,6 +26,7 @@
           },
           "interfaces": {
             "rest": {
+              "path": "user",
               "methods":["POST"]
             }
           }
@@ -34,6 +34,7 @@
         "updateUser": {
           "interfaces": {
             "rest": {
+              "path": "user",
               "methods": [
                 "PUT"
               ]
@@ -43,6 +44,7 @@
         "deleteUser": {
           "interfaces": {
             "rest": {
+              "path": "user",
               "methods": [
                 "DELETE"
               ]
