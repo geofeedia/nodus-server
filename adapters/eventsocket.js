@@ -22,12 +22,10 @@ class EventSocket extends Adapter {
         this.port = config.port;
     }
 
-    attach(server) {
-        logger.info('Attaching to server event stream...');
-
+    load(server) {
         // ** Log all events
-        server.onAny((event, value) => {
-            logger.info('[EVENT]', value, {event: event});
+        server.onAny((event, data) => {
+            logger.info('[EVENT]', event, data);
         });
     }
 }
