@@ -14,12 +14,15 @@ class PingService extends Service {
     constructor(name, options) {
         super(name, options);
 
-        const self = this;
-
         // ** /ping/send?delay=<optional>
-        this.addCommand(new Command('send', {}, function (delay) {
-            // ** Send a 'ping' request to the 'pong' service.
-            return self.request('pong', 'ping', {}, {delay: delay});
+        const self = this;
+        this.addCommand(new Command('pong', {}, function (delay) {
+            // ** Send a 'ping' request (to the 'pong' service.)
+            return self.request({
+                // service: 'pong',
+                command: 'ping',
+                options: {delay: delay}
+            });
         }));
     }
 }

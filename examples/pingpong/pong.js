@@ -17,17 +17,16 @@ class PongService extends Service {
         super(name, options);
 
         // ** Handle PING requests
-        this.process_request(
+        this.handle_request(
             req => req.command === 'ping',
             req => {
-                // ** Read all the options and arguments passed in the request
+                // ** Read the request arguments and options.
                 logger.info('ARGS:', req.args);
                 logger.info('OPTIONS:', req.options);
 
-                const delay = req.options.delay;
-
                 // ** Check if the --delay option was passed and if so, delay a specified number of milliseconds
                 // ** before sending a 'PONG' reply.
+                const delay = req.options.delay;
                 return delay
                     ? new Promise((resolve, reject) => setTimeout(() => resolve('PONG'), parseInt(delay)))
                     : 'PONG'

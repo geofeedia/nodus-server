@@ -48,7 +48,11 @@ class RestInterface extends Interface {
             const args = req.query;
 
             // ** Make a dynamic service request
-            this.request(service, command, args)
+            this.request({
+                    service: service,
+                    command: command,
+                    args: args
+                })
                 .catch(err => {
                     // ** Convert error('NO_HANDLER') -> 404
                     if (err.code === 'NO_HANDLER') {
@@ -73,7 +77,11 @@ class RestInterface extends Interface {
             const args = req.body;
 
             // ** Make a dynamic service request
-            this.request(service, command, args)
+            this.request({
+                    service: service,
+                    command: command,
+                    args: args
+                })
                 .catch(err => {
                     // ** Convert error('NO_HANDLER') -> 404
                     if (err.code === 'NO_HANDLER') {
