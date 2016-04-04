@@ -173,10 +173,13 @@ function start() {
 
     // ** Start reading from stdin so we don't exit.
     process.stdin.resume();
-    process.stdin.on('end', () => {
-        logger.warn('**** EOF RECEIVED. ****');
-        shutdown();
-    });
+
+    if (!options.EOF_DISABLED) {
+        process.stdin.on('end', () => {
+            logger.warn('**** EOF RECEIVED. ****');
+            shutdown();
+        });
+    }
 }
 
 function stop() {
