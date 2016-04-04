@@ -8,8 +8,6 @@
       }
     }
   },
-  "services": {
-    "console": "console.js"
-  },
+  "services": {},
   "interfaces": {}
 }

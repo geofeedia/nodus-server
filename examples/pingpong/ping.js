@@ -14,7 +14,7 @@ class PingService extends Service {
     constructor(name, options) {
         super(name, options);
 
-        // ** /ping/send?delay=<optional>
+        // ** Add a PING command that issues a 'PONG' request to the server
         const self = this;
         this.addCommand(new Command('pong', {}, function (delay) {
             // ** Send a 'ping' request (to the 'pong' service.)
