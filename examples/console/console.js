@@ -5,7 +5,7 @@ const DEFAULT_HOST = 'localhost';
 const DEFAULT_PORT = 8080;
 
 // ** Dependencies
-const http_server = require('http-server');
+const WebSocket = require('ws');
 
 // ** Libraries
 const Service = require('../../lib/Service');
@@ -13,27 +13,28 @@ const Service = require('../../lib/Service');
 // ** Platform
 const logger = require('nodus-framework').logging.createLogger();
 
-class Console extends Service {
-    constructor(name, options, config) {
-        super(name, options, config);
+function logEvents() {
+    var socket = new WebSocket('ws://localhost:3333/');
 
-        this.host = options.host || DEFAULT_HOST;
-        this.port = options.port || DEFAULT_PORT;
+    socket.on('open', function open() {
+        console.log('connected');
+        socket.send(Date.now().toString(), {mask: true});
+    });
 
-        this.http_server = http_server.createServer({
-            root: __dirname + '/web'
-        });
-    }
+    socket.on('close', function close() {
+        console.log('disconnected');
+    });
 
-    start() {
+    socket.on('message', function message(data, flags) {
+        console.log('Roundtrip time: ' + (Date.now() - parseInt(data)) + 'ms', flags);
 
-        logger.warn('Starting HTTP Server...', {host: this.host, port: this.port});
-        this.http_server.listen(this.port, this.host);
+        setTimeout(function timeout() {
+            socket.send(Date.now().toString(), {mask: true});
+        }, 500);
+    });
 
-        super.start();
-    }
+    return socket;
 }
 
 // ** Exports
-module.exports = Console;
-module.exports.Console = Console;
+module.exports = logEvents;

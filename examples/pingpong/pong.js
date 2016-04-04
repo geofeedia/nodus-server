@@ -1,6 +1,7 @@
 'use strict';
 
 // ** Dependencies
+const Q = require('q');
 const util = require('util');
 
 // ** Libraries
@@ -8,6 +9,10 @@ const Service = require('../../lib').Service;
 
 // ** Platform
 const logger = require('nodus-framework').logging.createLogger();
+
+function delay(fn, delay_ms) {
+    return new Promise((resolve, reject) => setTimeout(() => resolve(Q.when(fn)), parseInt(delay_ms)))
+}
 
 /**
  * Handles 'PING' messages with a 'PONG' reply
@@ -26,10 +31,9 @@ class PongService extends Service {
 
                 // ** Check if the --delay option was passed and if so, delay a specified number of milliseconds
                 // ** before sending a 'PONG' reply.
-                const delay = req.options.delay;
-                return delay
-                    ? new Promise((resolve, reject) => setTimeout(() => resolve('PONG'), parseInt(delay)))
-                    : 'PONG'
+                return req.options.delay
+                    ? delay('PONG', req.options.delay)
+                    : 'PONG';
             });
     }
 }
