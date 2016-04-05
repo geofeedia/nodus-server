@@ -164,7 +164,6 @@ function load() {
 
         server.loadService(service);
     });
-
 }
 
 function start() {
