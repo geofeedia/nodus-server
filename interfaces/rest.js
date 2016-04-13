@@ -4,6 +4,7 @@
 const DEFAULT_METHODS = ['GET'];
 
 // ** Dependencies
+const util = require('util');
 const _ = require('underscore');
 const PATH = require('path');
 const restify = require('restify');
@@ -44,20 +45,19 @@ class RestInterface extends Interface {
         // ** Map Nodus-Framework error codes to status codes
         const send_error = res => err => {
             if (err.code === 'NO_HANDLER') {
-                res.status(404);
-                res.send(err);
-                next();
-            } else if (util.isNumber(err.code)) {
-                res.status(err.code);
-                res.send(err);
-                next();
+                res.send(404, err);
+                next(err);
+            } else if (err.code > 0) {
+                res.send(err.code, err);
+                // err.statusCode = err.code;
+                next(err);
             } else {
                 logger.error(err);
                 next(err);
             }
         };
 
-        // ** 
+        // **
         const send_result = res => result => {
             res.send(result);
             next();
@@ -75,8 +75,8 @@ class RestInterface extends Interface {
                     command: command,
                     args: args
                 })
+                .then(send_result(res))
                 .catch(send_error(res))
-                .then(send_result(res));
         });
 
         // ** Make a dynamic service request
