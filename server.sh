@@ -6,4 +6,4 @@ HOST="0.0.0.0"
 set -e
 
 bin/server.js $@ \
-| bunyan
+| node_modules/bunyan/bin/bunyan

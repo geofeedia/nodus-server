@@ -1,4 +1,13 @@
 {
+  "adapters": {
+    "eventsocket": {
+      "type": "adapters/eventsocket.js",
+      "config": {
+        "host": "localhost",
+        "port": 3333
+      }
+    }
+  },
   "services": {
     "ping": "ping.js",
     "pong": "pong.js"

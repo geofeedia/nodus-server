@@ -43,22 +43,22 @@ class RestInterface extends Interface {
         // }));
 
         // ** Map Nodus-Framework error codes to status codes
-        const send_error = res => err => {
+        const send_error = (res, next) => err => {
             if (err.code === 'NO_HANDLER') {
                 res.send(404, err);
-                next(err);
+                // next(err);
             } else if (err.code > 0) {
                 res.send(err.code, err);
                 // err.statusCode = err.code;
-                next(err);
+                // next(err);
             } else {
                 logger.error(err);
-                next(err);
+                // next(err);
             }
         };
 
         // **
-        const send_result = res => result => {
+        const send_result = (res, next) => result => {
             res.send(result);
             next();
         };
@@ -75,8 +75,8 @@ class RestInterface extends Interface {
                     command: command,
                     args: args
                 })
-                .then(send_result(res))
-                .catch(send_error(res))
+                .then(send_result(res, next))
+                .catch(send_error(res, next))
         });
 
         // ** Make a dynamic service request
@@ -91,8 +91,8 @@ class RestInterface extends Interface {
                     command: command,
                     args: args
                 })
-                .catch(send_error(res))
-                .then(send_result(res));
+                .catch(send_error(res, next))
+                .then(send_result(res, next));
         });
     }
 

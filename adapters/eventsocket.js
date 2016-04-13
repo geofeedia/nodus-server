@@ -54,7 +54,7 @@ class EventSocket extends Adapter {
 
         // ** Log all events
         server.onAny((event, data) => {
-            logger.info('[EVENT]', event, data);
+            logger.warn('****** [EVENT]', event, data);
 
             // ** Requests
             // event:'request'
