@@ -41,6 +41,28 @@ class RestInterface extends Interface {
         //     log: logger
         // }));
 
+        // ** Map Nodus-Framework error codes to status codes
+        const send_error = res => err => {
+            if (err.code === 'NO_HANDLER') {
+                res.status(404);
+                res.send(err);
+                next();
+            } else if (util.isNumber(err.code)) {
+                res.status(err.code);
+                res.send(err);
+                next();
+            } else {
+                logger.error(err);
+                next(err);
+            }
+        };
+
+        // ** 
+        const send_result = res => result => {
+            res.send(result);
+            next();
+        };
+
         // ** Make a dynamic service request
         this.api.get('/:service/:command', (req, res, next) => {
             const service = req.params.service;
@@ -53,21 +75,8 @@ class RestInterface extends Interface {
                     command: command,
                     args: args
                 })
-                .catch(err => {
-                    // ** Convert error('NO_HANDLER') -> 404
-                    if (err.code === 'NO_HANDLER') {
-                        res.status(404);
-                        res.send(err);
-                        next();
-                    } else {
-                        logger.error(err);
-                        next(err);
-                    }
-                })
-                .then(result => {
-                    res.send(result);
-                    next();
-                });
+                .catch(send_error(res))
+                .then(send_result(res));
         });
 
         // ** Make a dynamic service request
@@ -82,21 +91,8 @@ class RestInterface extends Interface {
                     command: command,
                     args: args
                 })
-                .catch(err => {
-                    // ** Convert error('NO_HANDLER') -> 404
-                    if (err.code === 'NO_HANDLER') {
-                        res.status(404);
-                        res.send(err);
-                        next();
-                    } else {
-                        logger.error(err);
-                        next(err);
-                    }
-                })
-                .then(result => {
-                    res.send(result);
-                    next();
-                });
+                .catch(send_error(res))
+                .then(send_result(res));
         });
     }
 
@@ -115,7 +111,7 @@ class RestInterface extends Interface {
     }
 
     registerEndpoint(path, options, command) {
-        return;
+        return; // DEPRECIATED
 
         logger.info('PATH:', path);
         const api = this.api;

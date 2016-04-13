@@ -47,7 +47,7 @@ class EventSocket extends Adapter {
     }
 
     /**
-     * Load the adapter to the server
+     * Attach the adapter to the server.
      * @param server
      */
     attach(server) {
@@ -55,6 +55,31 @@ class EventSocket extends Adapter {
         // ** Log all events
         server.onAny((event, data) => {
             logger.info('[EVENT]', event, data);
+
+            // ** Requests
+            // event:'request'
+            // data: {
+            //      id: <req-id>
+            //      service:
+            //      command:
+            //      args:
+            //      options:
+            //      data:
+            // }
+
+            // ** Responses
+            // event: 'response'
+            // data: {
+            //      id: <req-id>
+            //      result:
+            //      error:
+            // }
+
+            // ** Events
+            // event: 'event'
+            // data: { ... }
+
+            
         });
     }
 }
