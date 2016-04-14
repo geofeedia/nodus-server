@@ -32,10 +32,6 @@ class PongService extends Service {
         this.handle_request(
             req => req.command === 'ping',
             req => {
-                // ** Read the request arguments and options of the request.
-                logger.info('ARGS:', req.args);
-                logger.info('OPTIONS:', req.options);
-
                 // ** Check if the --delay option was passed and if so, delay a specified number of milliseconds
                 // ** before sending a 'PONG' reply.
                 return req.options.delay

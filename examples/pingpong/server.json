@@ -1,6 +1,4 @@
 {
-  "adapters": {
-  },
   "services": {
     "ping": "ping.js",
     "pong": "pong.js"
