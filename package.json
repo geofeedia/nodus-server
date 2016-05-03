@@ -1,11 +1,11 @@
 {
   "name": "nodus-server",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Server Hosting Platform for nodus based applications.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bradserbu/nodus-server.git"
+    "url": "https://github.com/geofeedia/nodus-server.git"
   },
   "bin": {
     "nodus-server": "bin/server.js"
