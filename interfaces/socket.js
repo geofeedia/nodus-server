@@ -26,17 +26,17 @@ class SocketInterface extends Interface {
 
         // ** Manage client connections
         this.socket.on('connection', socket => {
-            logger.info('SOCKET:', socket);
+            logger.debug('SOCKET:', socket);
 
             socket.on('close', () => {
-                logger.info('SOCKET_CLOSED:', socket);
+                logger.debug('SOCKET_CLOSED:', socket);
             })
         });
     }
 
     start() {
         // ** Start Web Socket Server
-        logger.info('Listening for Web Socket connections.', {host: this.host, port: this.port});
+        logger.debug('Listening for Web Socket connections.', {host: this.host, port: this.port});
         this.server.listen(this.host, this.port);
 
         // ** Receive a REQUEST from the WebSocket server
