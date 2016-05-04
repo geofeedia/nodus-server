@@ -25,13 +25,13 @@ logger.debug('OPTIONS:', options);
 // ** Keep track of register interface providers
 const __instances = {};
 function create_instance(type, name, options, config) {
-    logger.info('INSTANCE:', type);
+    logger.debug('INSTANCE:', type);
     // ** Check if we have already loaded this provider
     if (!__instances[type]) {
         __instances[type] = require(`../${type}`);
     }
 
-    logger.info({options: options, config: config});
+    logger.debug({options: options, config: config});
     return new __instances[type](name, options, config);
 }
 
@@ -39,7 +39,7 @@ function create_instance(type, name, options, config) {
 const server = new Server(options);
 
 function shutdown() {
-    logger.info('Shutting down server...');
+    logger.debug('Shutting down server...');
 
     server.stop();
     process.exit();
@@ -56,8 +56,8 @@ function init() {
     });
 
     // ** Load when the server is started and stopped
-    server.on('started', () => logger.info('Server started.'));
-    server.on('stopped', () => logger.info('Server stopped.'));
+    server.on('started', () => logger.debug('Server started.'));
+    server.on('stopped', () => logger.debug('Server stopped.'));
 }
 
 // ** Load the server configuration
@@ -80,7 +80,7 @@ function load() {
             : path.parse(filepath).dir // Use the directory of the file path
     );
 
-    logger.info('DIR:', dir);
+    logger.debug('DIR:', dir);
 
     // ** server.json
     const extension = path.extname(filepath);
@@ -88,7 +88,7 @@ function load() {
 
     const config = files.requireFile(filepath);
 
-    logger.info('CONFIG:', config);
+    logger.debug('CONFIG:', config);
 
     // ** Load Adapters
     _.forEach(config.adapters, (def, adapter_name) => {
@@ -114,24 +114,24 @@ function load() {
         server.loadInterface(interface_name, _interface)
     });
 
-    logger.info('INTERFACES:', server._interfaces);
+    logger.debug('INTERFACES:', server._interfaces);
 
     // ** Load Services
     _.forEach(config.services, (service_options, service_name) => {
-        logger.info('Loading service:', {name: service_name}, service_options);
+        logger.debug('Loading service:', {name: service_name}, service_options);
 
         // ** If the def is a string, then assume it is a service exported from JS code
         // ** and require the file.
         let service;
         if (util.isString(service_options)) {
             const provider_file = path.join(dir, service_options);
-            logger.info('FILE:', provider_file);
+            logger.debug('FILE:', provider_file);
 
             const provider = files.requireFile(provider_file);
 
             // ** Check the type being exported here
             if (provider instanceof Service) {
-                logger.info('*** EXPORTED SERVICE ***');
+                logger.debug('*** EXPORTED SERVICE ***');
             }
 
             service = new provider(service_name, service_options);
@@ -142,10 +142,10 @@ function load() {
 
         // ** Load the commands
         _.forEach(service_options.commands, (command_options, command_name) => {
-            logger.info('Loading command:', {name: command_name}, command_options);
+            logger.debug('Loading command:', {name: command_name}, command_options);
 
             const provider_file = path.join(dir, command_options.provider);
-            logger.info('FILE:', provider_file);
+            logger.debug('FILE:', provider_file);
 
             // ** Load the provider for this command
             const provider = files.requireFile(provider_file);

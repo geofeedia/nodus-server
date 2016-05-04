@@ -97,14 +97,14 @@ class RestInterface extends Interface {
     }
 
     start() {
-        logger.info('REST: Starting Http Listener...', {host: this.host, port: this.port});
+        logger.debug('REST: Starting Http Listener...', {host: this.host, port: this.port});
         this.api.listen(this.port, this.host);
 
         super.start();
     }
 
     stop() {
-        logger.info('REST: Stopping Http Listener...');
+        logger.debug('REST: Stopping Http Listener...');
         this.api.close();
 
         super.stop();
@@ -113,7 +113,7 @@ class RestInterface extends Interface {
     registerEndpoint(path, options, command) {
         return; // DEPRECIATED
 
-        logger.info('PATH:', path);
+        logger.debug('PATH:', path);
         const api = this.api;
         const methods = options.methods || DEFAULT_METHODS;
 
@@ -124,7 +124,7 @@ class RestInterface extends Interface {
                         const url = req.url;
                         const args = req.query;
 
-                        logger.info('=> GET:', url, args);
+                        logger.debug('=> GET:', url, args);
 
                         // ** Run the command
                         command(args)
@@ -140,7 +140,7 @@ class RestInterface extends Interface {
                         const url = req.url;
                         const args = req.body;
 
-                        logger.info('=> POST:', url, args);
+                        logger.debug('=> POST:', url, args);
 
                         // ** Run the command
                         command(args, (err, result) => {
