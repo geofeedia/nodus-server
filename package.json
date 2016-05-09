@@ -1,5 +1,5 @@
 {
-  "name": "geofeedia-nodus-server",
+  "name": "nodus-server",
   "version": "0.2.3",
   "description": "Server Hosting Platform for nodus based applications.",
   "license": "Apache-2.0",
@@ -15,7 +15,7 @@
     "chalk": "^1.1.1",
     "eventemitter2": "^1.0.0",
     "http-server": "^0.9.0",
-    "geofeedia-nodus-framework": "^0.2.0",
+    "nodus-framework": "^0.2.0",
     "q": "^1.4.1",
     "restify": "^4.0.4",
     "underscore": "^1.8.3",
