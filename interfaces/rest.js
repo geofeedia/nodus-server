@@ -44,6 +44,12 @@ class RestInterface extends Interface {
 
         // ** Map Nodus-Framework error codes to status codes
         const send_error = (res, next) => err => {
+            if (typeof(err) == 'undefined') {
+                return res.send(500, errors(500, 'Internal error - with no error :S').toObject());
+            }
+            if (!err.code){
+                return res.send(500, errors(500, 'Internal error', err).toObject());
+            }
             if (err.code === 'NO_HANDLER') {
                 res.send(404, err);
                 // next(err);
