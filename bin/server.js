@@ -14,13 +14,16 @@ const Server = require('../lib/Server');
 
 // ** Platform
 const errors = require('nodus-framework').errors;
-const logger = require('nodus-framework').logging.createLogger();
+const logger = require('nodus-framework').logger;
 const cli = require('nodus-framework').cli;
 const files = require('nodus-framework').files;
 
 // ** Load CLI options and arguments
 const options = cli.options();
 logger.debug('OPTIONS:', options);
+
+// ** Update the default log level if (--logLevel=) is specified on the command-line
+if (options.logLevel) logger.setLevel(options.logLevel);
 
 // ** Keep track of register interface providers
 const __instances = {};
