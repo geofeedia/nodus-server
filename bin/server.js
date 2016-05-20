@@ -14,7 +14,7 @@ const Server = require('../lib/Server');
 
 // ** Platform
 const errors = require('nodus-framework').errors;
-const logger = require('nodus-framework').logging.createLogger();
+const logger = require('nodus-framework').logger;
 const cli = require('nodus-framework').cli;
 const files = require('nodus-framework').files;
 
