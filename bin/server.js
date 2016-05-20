@@ -22,6 +22,9 @@ const files = require('nodus-framework').files;
 const options = cli.options();
 logger.debug('OPTIONS:', options);
 
+// ** Update the default log level if (--logLevel=) is specified on the command-line
+if (options.logLevel) logger.setLevel(options.logLevel);
+
 // ** Keep track of register interface providers
 const __instances = {};
 function create_instance(type, name, options, config) {
