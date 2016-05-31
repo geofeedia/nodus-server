@@ -81,7 +81,9 @@ class RestInterface extends Interface {
                     service: service,
                     command: command,
                     args: args,
-                    loggingContext: new LoggingContext(req)
+                    options: {
+                        loggingContext: new LoggingContext(req)
+                    }
                 })
                 .then(send_result(res, next))
                 .catch(send_error(res, next))
