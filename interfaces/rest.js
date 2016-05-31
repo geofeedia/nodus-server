@@ -15,7 +15,7 @@ const Interface = require('../lib/Interface');
 
 // ** Platform
 const errors = require('nodus-framework').errors;
-const logger = require('nodus-framework').logging.createLogger();
+const logger = require('nodus-framework').logger;
 const LoggingContext = require('../lib/LoggingContext');
 
 /**
