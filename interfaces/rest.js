@@ -16,7 +16,7 @@ const Interface = require('../lib/Interface');
 // ** Platform
 const errors = require('nodus-framework').errors;
 const logger = require('nodus-framework').logger;
-const LoggingContext = require('../lib/LoggingContext');
+const ExecutionContext = require('nodus-framework').executionContext;
 
 /**
  * Provides a RESTful HTTP interface
@@ -82,7 +82,7 @@ class RestInterface extends Interface {
                     command: command,
                     args: args,
                     options: {
-                        loggingContext: new LoggingContext(req)
+                        executionContext: ExecutionContext.createFromRestRequest(req)
                     }
                 })
                 .then(send_result(res, next))
@@ -101,7 +101,7 @@ class RestInterface extends Interface {
                     command: command,
                     args: args,
                     options: {
-                        loggingContext: new LoggingContext(req)
+                        executionContext: ExecutionContext.createFromRestRequest(req)
                     }
                 })
                 .catch(send_error(res, next))
