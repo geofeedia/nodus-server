@@ -60,7 +60,7 @@ class RestInterface extends Interface {
                 // next(err);
             } else {
                 logger.error(err);
-                // next(err);
+                res.send(500, err);
             }
         };
 
