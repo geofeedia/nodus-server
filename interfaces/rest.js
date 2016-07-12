@@ -35,10 +35,17 @@ class RestInterface extends Interface {
             name: this.basePath
         });
 
+        // CORS support
+        this.api.use((req, res, next) => {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "X-Requested-With");
+            return next();
+        });
         this.api.use(restify.dateParser());
         this.api.use(restify.queryParser());
         this.api.use(restify.bodyParser());
         this.api.use(restify.gzipResponse());
+
         // this.api.use(restify.auditLogger({
         //     log: logger
         // }));
@@ -48,7 +55,7 @@ class RestInterface extends Interface {
             if (typeof(err) == 'undefined') {
                 return res.send(500, errors(500, 'Internal error - with no error :S').toObject());
             }
-            if (!err.code){
+            if (!err.code) {
                 return res.send(500, errors(500, 'Internal error', err).toObject());
             }
             if (err.code === 'NO_HANDLER') {
@@ -78,13 +85,13 @@ class RestInterface extends Interface {
 
             // ** Make a dynamic service request
             this.request({
-                    service: service,
-                    command: command,
-                    args: args,
-                    options: {
-                        loggingContext: new LoggingContext(req)
-                    }
-                })
+                service: service,
+                command: command,
+                args: args,
+                options: {
+                    loggingContext: new LoggingContext(req)
+                }
+            })
                 .then(send_result(res, next))
                 .catch(send_error(res, next))
         });
@@ -97,13 +104,13 @@ class RestInterface extends Interface {
 
             // ** Make a dynamic service request
             this.request({
-                    service: service,
-                    command: command,
-                    args: args,
-                    options: {
-                        loggingContext: new LoggingContext(req)
-                    }
-                })
+                service: service,
+                command: command,
+                args: args,
+                options: {
+                    loggingContext: new LoggingContext(req)
+                }
+            })
                 .catch(send_error(res, next))
                 .then(send_result(res, next));
         });
