@@ -35,12 +35,7 @@ class RestInterface extends Interface {
             name: this.basePath
         });
 
-        // CORS support
-        this.api.use((req, res, next) => {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "X-Requested-With");
-            return next();
-        });
+        this.api.use(restify.CORS());  // CORS support
         this.api.use(restify.dateParser());
         this.api.use(restify.queryParser());
         this.api.use(restify.bodyParser());
