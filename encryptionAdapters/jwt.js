@@ -8,38 +8,29 @@ class JWT extends EncryptionAdapter{
     constructor(configs){
         super(configs);
         this.privateKey = this.configs.privateKey;
-        this.queryStringField = 'jwt';
+        this.field = 'Jwt';
     }
     _isString(value){
         return typeof value === 'string' || value instanceof String;
     }
     decode(data){
+        const value = data[this.field];
+        if (!this._isString(value)){
+            throw errors(400, 'invalid jwt format');
+        }
         var decoded;
         try {
-            decoded = jwt.verify(data, this.privateKey);
+            decoded = jwt.verify(value, this.privateKey);
         }
         catch(err){
-            console.log(data);
             throw errors(401, 'invalid jwt', err);
         }
         return decoded;
     }
-    decodeQueryString(args){
-        const value = args[this.queryStringField];
-        if (!this._isString(value)){
-            throw errors(400, 'invalid jwt format');
-        }
-        return this.decode(value);
-    }
-    decodeBody(body){
-        if (!this._isString(body)){
-            throw errors(400, 'invalid jwt format');
-        }
-        return this.decode(body);
-    }
     encode(response){
-        // TODO: DETERMINE WHY THE ENCODED VALUE INCLUDES QUOTES
-        return jwt.sign(response, this.privateKey);
+        var encoded = {};
+        encoded[this.field] = jwt.sign(response, this.privateKey);
+        return encoded;
     }
 }
 

@@ -82,7 +82,7 @@ class RestInterface extends Interface {
         this.api.get('/:service/:command', (req, res, next) => {
             const service = req.params.service;
             const command = req.params.command;
-            const args = this.encryptionAdapter.decodeQueryString(req.query);
+            const args = this.encryptionAdapter.decode(req.query);
 
             // ** Make a dynamic service request
             this.request({
@@ -101,7 +101,7 @@ class RestInterface extends Interface {
         this.api.post('/:service/:command', (req, res, next) => {
             const service = req.params.service;
             const command = req.params.command;
-            const args = this.encryptionAdapter.decodeBody(req.body);
+            const args = this.encryptionAdapter.decode(req.body);
 
             // ** Make a dynamic service request
             this.request({
