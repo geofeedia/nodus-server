@@ -1,6 +1,6 @@
 {
   "name": "nodus-server",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Server Hosting Platform for nodus based applications.",
   "license": "Apache-2.0",
   "repository": {
@@ -19,6 +19,7 @@
     "q": "^1.4.1",
     "restify": "^4.0.4",
     "underscore": "^1.8.3",
-    "uuid": "^2.0.1"
+    "uuid": "^2.0.1",
+    "jsonwebtoken": "^7.1.9"
   }
 }

@@ -17,6 +17,7 @@ const Interface = require('../lib/Interface');
 const errors = require('nodus-framework').errors;
 const logger = require('nodus-framework').logger;
 const LoggingContext = require('../lib/LoggingContext');
+const EncryptionAdapters = require('../encryptionAdapters');
 
 /**
  * Provides a RESTful HTTP interface
@@ -29,6 +30,11 @@ class RestInterface extends Interface {
         this.host = config.host;
         this.port = config.port;
         this.basePath = config.basePath;
+        var encryptionAdapter = EncryptionAdapters[config.encryptionAdapter];
+        if (!encryptionAdapter){
+            encryptionAdapter = EncryptionAdapters.default;
+        }
+        this.encryptionAdapter = new encryptionAdapter(config.encryptionAdapterConfigs);
 
         // ** Create HTTP Server
         this.api = restify.createServer({
@@ -68,7 +74,7 @@ class RestInterface extends Interface {
 
         // **
         const send_result = (res, next) => result => {
-            res.send(result);
+            res.send(this.encryptionAdapter.encode(result));
             next();
         };
 
@@ -76,7 +82,7 @@ class RestInterface extends Interface {
         this.api.get('/:service/:command', (req, res, next) => {
             const service = req.params.service;
             const command = req.params.command;
-            const args = req.query;
+            const args = this.encryptionAdapter.decode(req.query);
 
             // ** Make a dynamic service request
             this.request({
@@ -95,7 +101,7 @@ class RestInterface extends Interface {
         this.api.post('/:service/:command', (req, res, next) => {
             const service = req.params.service;
             const command = req.params.command;
-            const args = req.body;
+            const args = this.encryptionAdapter.decode(req.body);
 
             // ** Make a dynamic service request
             this.request({
